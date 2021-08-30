@@ -1,0 +1,72 @@
+---
+title: "data-discription"
+description: |
+  A short description of the post.
+author:
+  - name: Hanchen Wang
+    url: https://example.com/norajones
+date: 08-30-2021
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r}
+library(tidycovid19)
+library(tidyverse)
+library(gt)
+library(zoo)
+library(plotly)
+```
+
+
+
+```{r}
+dat <- download_merged_data(cached = TRUE, silent = TRUE)
+Ukraine <- dat %>%
+  filter(country == "Ukraine")
+```
+
+```{r}
+Ukraine_tidy <- Ukraine %>% 
+  select(2:6, total_vaccinations) %>% 
+#Ukraine_tidy[is.na(Ukraine_tidy)] <- 0 
+#Ukraine_tidy %>% 
+  mutate(newcases = confirmed - lag(confirmed),.before = deaths) %>%
+  mutate(newdeaths = deaths - lag(deaths), .before = recovered) %>% 
+  mutate(newvaccinations = total_vaccinations - lag(total_vaccinations)) %>% 
+  select(-total_vaccinations)
+Ukraine_tidy[is.na(Ukraine_tidy)] <- 0 
+
+```
+
+```{r}
+DT::datatable(Ukraine_tidy, options = list(pageLength = 4))
+```
+
+
+
+
+```{r}
+# visualize the cases
+Ukraine_fig <- Ukraine_tidy %>% 
+  select(-c(confirmed, deaths, recovered, newvaccinations)) %>% 
+  pivot_longer(cols = c(newcases, newdeaths), names_to = "index", values_to = "count") %>% 
+  ggplot(aes(x = date, y = count, group = index, color = index))+
+  geom_line()+
+  theme_bw()
+
+ggplotly(Ukraine_fig)
+```
+
+
+
+Distill is a publication format for scientific and technical writing, native to the web.
+
+Learn more about using Distill at <https://rstudio.github.io/distill>.
+
+
