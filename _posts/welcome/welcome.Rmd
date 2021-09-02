@@ -1,10 +1,10 @@
 ---
-title: "Welcome to blog-hwan0143"
+title: "Welcome to my blog"
 description: |
-  Welcome to our new blog, blog-hwan0143. We hope you enjoy 
-  reading what we have to say!
+  Welcome to Ori's blog. Hope you enjoy 
+  reading what I wanna say!
 author:
-  - name: Nora Jones 
+  - name: Hanchen Wang 
     url: https://example.com/norajones
     affiliation: Spacely Sprockets
     affiliation_url: https://example.com/spacelysprokets

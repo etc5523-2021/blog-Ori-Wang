@@ -2,10 +2,10 @@
   "articles": [
     {
       "path": "index.html",
-      "title": "blog-hwan0143",
+      "title": "My blog",
       "author": [],
       "contents": "\r\n\r\n\r\n\r\n",
-      "last_modified": "2021-08-30T11:57:13+08:00"
+      "last_modified": "2021-09-03T00:45:01+08:00"
     }
   ],
   "collections": ["posts/posts.json"]

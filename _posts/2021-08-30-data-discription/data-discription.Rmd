@@ -1,7 +1,7 @@
 ---
-title: "data-discription"
+title: "COVID-19 in Ukraine"
 description: |
-  A short description of the post.
+  The basic COVID-19 information in Ukraine until 31th August 2021
 author:
   - name: Hanchen Wang
     url: https://example.com/norajones
@@ -11,53 +11,154 @@ output:
     self_contained: false
 ---
 
+
+
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = FALSE,
+                      message = FALSE,
+                      warning = FALSE,
+                      fig.align = "center")
 ```
 
-```{r}
+```{r, message=FALSE}
 library(tidycovid19)
+library(lubridate)
 library(tidyverse)
 library(gt)
 library(zoo)
 library(plotly)
+library(DT)
+library(naniar)
+
 ```
 
 
 
 ```{r}
-dat <- download_merged_data(cached = TRUE, silent = TRUE)
-Ukraine <- dat %>%
-  filter(country == "Ukraine")
+recovered <- download_merged_data(cached = TRUE, silent = TRUE) %>% 
+  select(2:3, recovered) %>% 
+  filter(country == "Ukraine") 
+
+Ukraine <- read_csv(here::here("data/owid-covid-data.csv"))
+
+Ukraine <- Ukraine %>% 
+  select(3:6, 8:9, total_vaccinations, population) %>% 
+  filter(location == "Ukraine") %>% 
+  rename(confirmed = total_cases, 
+         `new cases` = new_cases, 
+         `total deaths` = total_deaths, 
+         `new deaths` = new_deaths, 
+         `total vaccinations` = total_vaccinations, 
+         country = location) %>% 
+  left_join(recovered, by = c("date", "country"))
+  
+    
+  
 ```
+
+## Data Description
+
+The data were sourced from `tidycovid19` package which is the the R language package comes with the system (Joachim Gassen, 2021) and A global database of COVID-19 vaccinations (Mathieu, E. , et al., 2021). "Ukraine_tidy" is a new data after steps of `select` , `left_join` and `rename` from the origin data, and the Data dictionary is as following:
+
+|**Variable**      |**Class** |**Description**                 |
+|:-----------------|:---------|:-------------------------------|
+|date              |date      |Date recorded                   |
+|confirmed         |numeric   |Daily confirmed COVID-19 cases  |
+|new cases         |numeric   |Daily new COVID-19 cases        |
+|total deaths      |numeric   |Daily total deaths              |
+|new deaths        |numeric   |Daily new deaths                |
+|total vaccinations|numeric   |Daily total vaccinations        | 
+|recovered         |numeric   |Total recovered cases           |
+
+
+
 
 ```{r}
 Ukraine_tidy <- Ukraine %>% 
-  select(2:6, total_vaccinations) %>% 
-#Ukraine_tidy[is.na(Ukraine_tidy)] <- 0 
-#Ukraine_tidy %>% 
-  mutate(newcases = confirmed - lag(confirmed),.before = deaths) %>%
-  mutate(newdeaths = deaths - lag(deaths), .before = recovered) %>% 
-  mutate(newvaccinations = total_vaccinations - lag(total_vaccinations)) %>% 
-  select(-total_vaccinations)
+  select(-country)
+
 Ukraine_tidy[is.na(Ukraine_tidy)] <- 0 
 
 ```
 
+
+
+
+## Data table
+
+The data table shows the basic information of COVID-19 in Ukraine, which contains `r ncol(Ukraine_tidy)` variables and `r nrow(Ukraine_tidy)` observations. 
+
+
 ```{r}
-DT::datatable(Ukraine_tidy, options = list(pageLength = 4))
+Ukraine_dattab <- Ukraine_tidy %>% 
+  select(-population)
+
+datatable(Ukraine_dattab, options = list(pageLength = 3), caption = "The Basic Information of COVOD-19 in Ukraine Until 31th August 2021")
+```
+## Missing Value Summary
+
+The number and percentage of missing value in each variable are as follows:
+
+
+```{r}
+miss_var_summary(Ukraine) %>% 
+  datatable(options = list(pageLength = 4), caption = "Missing value summary")
 ```
 
-
-
+## Data Summary
 
 ```{r}
+Ukraine_tidy_tab <- Ukraine_tidy %>% 
+  mutate(year = str_sub(date, end = 4)) %>% 
+  #filter(date %in% c("2020-12-31", "2021-08-21")  , `new cases`, `total deaths`, population, recovered
+  select(-c(date, `new cases`, `new deaths`)) %>% 
+  rename(Year = year) %>% 
+  group_by(Year) %>% 
+  summarise(`Total Cases` = max(confirmed), 
+            `Total Deaths` = max(`total deaths`), 
+            `Total Vaccinations` = max(`total vaccinations`), 
+            Population = max(population), 
+            `Total Recovery` = max(recovered))
+
+
+
+gt(Ukraine_tidy_tab) %>% 
+  tab_header(title = "The Summary of COVID-19 Information in Ukraine",
+  subtitle = "Total Number in 2020 and 2021") %>% 
+  tab_source_note(md("Mathieu, E. , et al. *A global database of COVID-19 vaccinations.* Nature Human Behaviour.")) %>% 
+  cols_label(
+    `Total Cases` = html("Total Cases<br>(PPL)"),
+    `Total Deaths` = html("Total Deaths<br>(PPL)"),
+    `Total Vaccinations` = html("Total Vaccinations<br>(PPL)"),
+    Population = html("Population<br>(PPL)"),
+    `Total Recovery` = html("Total Recovery<br>(PPL)"))
+    
+    
+```
+From the two data tables, we can find that during the two years since the outbreak of COVID-19, the vaccine first became available on 1st July 2021, and the final total reached 43,733,759 on 31th August 2021 in Ukraine. Meanwhile, the total number of people recovered in 2021 almost tripled from 2020, accounting for 5 percent of the national population. However, the total number of confirmed cases doubled a year later to 2,3366,560, while the total number of deaths tripled to 56,457. Thanks to the timely delivery of the vaccine and strict regulation by the Ukrainian government, the total number of deaths accounted for only 2 percent of the confirmed cases.
+
+
+## Data Plot
+
+### The trend of COVID-19 new cases and deaths in Ukraine
+
+As Figure \@ref(fig:fig) shown below, Ukraine has a stable trend of new deaths, which peaked at 448 in 28th April 2021, and there was a Bimodal trend of new cases which peaked at 20,456 in 3rd April 2021.
+
+
+<style>
+.html-widget {
+    margin: auto;
+}
+</style>
+
+```{r fig, fig.cap="The Trend of COVID-19 New Cases and Deaths in Ukraine Until 31th August 2021"}
 # visualize the cases
 Ukraine_fig <- Ukraine_tidy %>% 
-  select(-c(confirmed, deaths, recovered, newvaccinations)) %>% 
-  pivot_longer(cols = c(newcases, newdeaths), names_to = "index", values_to = "count") %>% 
+  select(-c(confirmed, `total deaths`, recovered, `total vaccinations`)) %>% 
+  pivot_longer(cols = c(`new cases`, `new deaths`), names_to = "index", values_to = "count") %>% 
   ggplot(aes(x = date, y = count, group = index, color = index))+
-  geom_line()+
+  geom_line()+ 
+  #ggtitle("The trend of COVID-19 new cases and deaths in Ukraine") +
   theme_bw()
 
 ggplotly(Ukraine_fig)
@@ -65,8 +166,6 @@ ggplotly(Ukraine_fig)
 
 
 
-Distill is a publication format for scientific and technical writing, native to the web.
+## References
 
-Learn more about using Distill at <https://rstudio.github.io/distill>.
-
-
+Mathieu E , Ritchie H , Ortiz-Ospina E , et al. A global database of COVID-19 vaccinations[J]. Nature Human Behaviour. Url:https://github.com/CSSEGISandData/COVID-19

@@ -1,7 +1,8 @@
-name: "blog-hwan0143"
-title: "blog-hwan0143"
+name: "Ori's Blog"
+title: "Ori's blog" 
+theme: theme.css
 description: |
-  blog-hwan0143
+  My blog
 output_dir: "docs"
 navbar:
   right:
@@ -9,4 +10,8 @@ navbar:
       href: index.html
     - text: "About"
       href: about.html
-output: distill::distill_article
+    - icon: fab fa-github
+      href: https://github.com/Ori-Wang
+output: 
+  distill::distill_article:
+    css: styles.css
