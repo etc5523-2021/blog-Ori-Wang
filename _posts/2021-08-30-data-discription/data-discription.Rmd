@@ -2,15 +2,27 @@
 title: "COVID-19 in Ukraine"
 description: |
   The basic COVID-19 information in Ukraine until 31th August 2021
+categories:
+  - Ukraine
+  - Cases and Vaccination
 author:
   - name: Hanchen Wang
     url: https://example.com/norajones
 date: 08-30-2021
+preview: Ukraine.jpg
 output:
   distill::distill_article:
     self_contained: false
+    toc: true
+    toc_float: true
+    css: styles.css
 ---
 
+```{css, echo = FALSE}
+h1{
+  color: skyblue;
+}
+```
 
 
 ```{r setup, include=FALSE}
@@ -55,6 +67,12 @@ Ukraine <- Ukraine %>%
     
   
 ```
+
+> Should face life with a smile, no matter what happens.     --Julius Fucik
+
+![ ](people.jpg)
+
+We are going to analyze the situation of COVID19 in Ukraine in this post. And the critical data we focus on in this post is Confirmed Cases, Deaths and Vaccinations.
 
 ## Data Description
 
@@ -131,7 +149,16 @@ gt(Ukraine_tidy_tab) %>%
     `Total Deaths` = html("Total Deaths<br>(PPL)"),
     `Total Vaccinations` = html("Total Vaccinations<br>(PPL)"),
     Population = html("Population<br>(PPL)"),
-    `Total Recovery` = html("Total Recovery<br>(PPL)"))
+    `Total Recovery` = html("Total Recovery<br>(PPL)")) %>% 
+  tab_options(heading.background.color = "lavender", 
+              source_notes.background.color = "skyblue") %>% 
+    data_color(
+    columns = (c(`Total Cases`, `Total Deaths`, `Total Vaccinations`, `Total Recovery`)),
+    colors = scales::col_numeric(
+      c("white", "pink"),
+        domain = NULL
+        )
+      )
     
     
 ```
@@ -145,11 +172,6 @@ From the two data tables, we can find that during the two years since the outbre
 As Figure \@ref(fig:fig) shown below, Ukraine has a stable trend of new deaths, which peaked at 448 in 28th April 2021, and there was a Bimodal trend of new cases which peaked at 20,456 in 3rd April 2021.
 
 
-<style>
-.html-widget {
-    margin: auto;
-}
-</style>
 
 ```{r fig, fig.cap="The Trend of COVID-19 New Cases and Deaths in Ukraine Until 31th August 2021"}
 # visualize the cases
@@ -168,4 +190,9 @@ ggplotly(Ukraine_fig)
 
 ## References
 
+Hadley Wickham and Jim Hester (2021). readr: Read Rectangular Text Data. R package version 2.0.0. https://CRAN.R-project.org/package=readr
+
+Richard Iannone, Joe Cheng and Barret Schloerke (2021). gt: Easily Create Presentation-Ready Display Tables. R package version 0.3.1. https://CRAN.R-project.org/package=gt
+
 Mathieu E , Ritchie H , Ortiz-Ospina E , et al. A global database of COVID-19 vaccinations[J]. Nature Human Behaviour. Url:https://github.com/CSSEGISandData/COVID-19
+

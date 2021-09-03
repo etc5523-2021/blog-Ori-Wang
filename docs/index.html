@@ -105,7 +105,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","site","listing"]}},"value":[{"type":"character","attributes":{},"value":["My blog"]},{"type":"character","attributes":{},"value":["distill::distill_website"]},{"type":"character","attributes":{},"value":["posts"]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","site","listing","output"]}},"value":[{"type":"character","attributes":{},"value":["My blog"]},{"type":"character","attributes":{},"value":["distill::distill_website"]},{"type":"character","attributes":{},"value":["posts"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","toc_depth","css"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[2]},{"type":"character","attributes":{},"value":["styles.css"]}]}]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   <!--radix_placeholder_navigation_in_header-->
@@ -2447,11 +2447,11 @@ function init_posts_list() {
 
 
 
-<div class="posts-container posts-apply-limit l-page">
+<div class="posts-container posts-with-sidebar posts-apply-limit l-screen-inset">
 <div class="posts-list">
 <h1 class="posts-list-caption" data-caption="My blog">My blog</h1>
 <a href="posts/2021-08-30-data-discription/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":[]}</script>
+<script class="post-metadata" type="text/json">{"categories":["Ukraine","Cases and Vaccination"]}</script>
 <div class="metadata">
 <div class="publishedDate">Aug. 30, 2021</div>
 <div class="dt-authors">
@@ -2459,11 +2459,14 @@ function init_posts_list() {
 </div>
 </div>
 <div class="thumbnail">
-<img/>
+<img src="posts/2021-08-30-data-discription/Ukraine.jpg"/>
 </div>
 <div class="description">
 <h2>COVID-19 in Ukraine</h2>
-<div class="dt-tags"></div>
+<div class="dt-tags">
+<div class="dt-tag">Ukraine</div>
+<div class="dt-tag">Cases and Vaccination</div>
+</div>
 <p>The basic COVID-19 information in Ukraine until 31th August 2021</p>
 </div>
 </a>
@@ -2485,6 +2488,25 @@ function init_posts_list() {
 reading what I wanna say!</p>
 </div>
 </a>
+</div>
+<div class="posts-sidebar">
+<div class="sidebar-section categories">
+<h3>Categories</h3>
+<ul>
+<li>
+<a href="#category:Articles">Articles</a>
+<span class="category-count">(2)</span>
+</li>
+<li>
+<a href="#category:Cases_and_Vaccination">Cases and Vaccination</a>
+<span class="category-count">(1)</span>
+</li>
+<li>
+<a href="#category:Ukraine">Ukraine</a>
+<span class="category-count">(1)</span>
+</li>
+</ul>
+</div>
 </div>
 <div class="posts-more">
 <a href="#">More articles &raquo;</a>
