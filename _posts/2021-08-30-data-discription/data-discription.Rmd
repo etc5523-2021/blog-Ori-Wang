@@ -173,12 +173,15 @@ As Figure \@ref(fig:fig) shown below, Ukraine has a stable trend of new deaths, 
 
 
 
-```{r fig, fig.cap="The Trend of COVID-19 New Cases and Deaths in Ukraine Until 31th August 2021"}
+```{r fig, fig.cap="The Trend of COVID-19 New Cases and Deaths in Ukraine"}
 # visualize the cases
 Ukraine_fig <- Ukraine_tidy %>% 
   select(-c(confirmed, `total deaths`, recovered, `total vaccinations`)) %>% 
   pivot_longer(cols = c(`new cases`, `new deaths`), names_to = "index", values_to = "count") %>% 
-  ggplot(aes(x = date, y = count, group = index, color = index))+
+  ggplot(aes(x = date, y = count, group = index, color = index))+ 
+  labs(title = "The Trend of COVID-19 New Cases and Deaths in Ukraine", 
+       x = "Date", 
+       y = "Number Count") + 
   geom_line()+ 
   #ggtitle("The trend of COVID-19 new cases and deaths in Ukraine") +
   theme_bw()
