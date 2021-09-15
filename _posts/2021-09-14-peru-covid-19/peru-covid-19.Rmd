@@ -169,7 +169,7 @@ peru_cases_line <- peru_tidy %>%
             color = "#CC0000") + 
   scale_x_date(breaks = "3 months") + 
   scale_y_continuous(labels = scales::comma) + 
-  labs(title = "The trend of total cases in Peru from 2020 to 2021",
+  labs(title = "The trend of total cases in Peru",
        x = "",
        y = "") +
   annotate("text",
@@ -192,7 +192,7 @@ peru_deaths_line <- peru_tidy %>%
             color = "#663300") + 
   scale_x_date(breaks = "3 months") +
   scale_y_continuous(labels = scales::comma) + 
-  labs(title = "The trend of total deaths in Peru from 2020 to 2021",
+  labs(title = "The trend of total deaths in Peru",
        x = "",
        y = "") +
   annotate("text",
@@ -206,7 +206,7 @@ ggplotly(peru_deaths_line)
 As the figure \@ref(fig:totca) and figure \@ref(fig:totde) shows, both total confirmed cases and deaths had a climb trend. However, the total number of the cases are more than 10 times higher than the latter. Interestingly, the both growth rates experienced slowing down from 30th Aug 2020 to 17th Jan 2021, which might because the effective prevention and control of the epidemic during this time period. In addition, one thing we should concentrate on is that such a death number seems not so much around the world, but compared with the local population, it cannot be ignored that the death rate from COVID-19 is extremely serious, almost ranked the first worldwide.
 
 
-## Data Story
+## Data Story 1
 
 ### Serious deaths situation
 
@@ -233,7 +233,7 @@ peru_new <- covid_peru %>%
    #             y = mean)) +
   gghighlight(new_cases > 16625, label_key = date) +
   theme_bw()+
-  labs(title = "The trend of daily new deaths in Peru from 2020 to 2021",
+  labs(title = "The trend of daily new deaths in Peru",
        x = "Date",
        y = "New Death Number")+
   theme(text = element_text(size = 10, face = "bold", color = "black")) + 
@@ -251,7 +251,10 @@ Lack of income makes it difficult for people to improve their housing environmen
 In addition, Peru’s healthcare system is overwhelmed. In April alone, there were 2,000 people on the waiting list for intensive care beds across Peru, and many Peruvians had no choice but to take care of confirmed patients at home. However, self-treatment is not the answer after all. The lack of proper medical supervision is likely to make the patient's condition worse.
 
 
-##
+## Data Story 2
+
+### Vaccination status
+
 ```{r vacage, fig.cap="Vaccination percentage by age in Peru in 2021"}
 age <- read_csv(here::here("data/covid-vaccine-by-age.csv"))
 age_tidy <- age %>% 
@@ -278,7 +281,7 @@ age_fig <- age_tidy %>%
   scale_y_continuous() + 
   guides(fill=guide_legend(title=NULL)) + 
   #scale_y_continuous()+
-  labs(title = "Vaccination percentage by age in Peru in 2021",
+  labs(title = "Vaccination percentage by age in Peru",
        subtitle = "",
        x = "Date",
        y = "Vaccination percentage", fill = age)+
@@ -291,6 +294,8 @@ ggplotly(age_fig)
 ```
 
 The figure \@ref(fig:vacage) shows the trend of the proportion of people in each age group who were vaccinated in that age group under different age groups. Even if the death situation in Peru is extremely dangerous, the good news is that the number of local vaccinations is increasing day by day, and a large proportion of people of all ages are vaccinated, and even this proportion has increased exponentially. At the same time, except for those aged 0-17, the proportion of people in other age groups being vaccinated is similar to each other, basically achieving a ratio of 80% on the day of 201.8.23. This not only reflects the fairness of resources for vaccination, but also demonstrates timely measures to resolve the epidemic. Combined with the death chart above, we have reason to believe that Peru’s slowing down of the epidemic diagnosis rate and mortality rate in the second half of 2021 is inseparable from the timely and large-scale vaccination of the vaccine and the government’s reasonable response to the new infection strain initiatively.
+
+In addition, the Ministry of Health has emphasized that the new crown vaccine being used in Peru is effective against the variant strain reported by India. The second wave of the epidemic in Peru is easing, and the number of hospitalizations has fallen sharply, especially among the elderly who have given priority to vaccination. This shows that vaccines are working.
 
 # Reference
 

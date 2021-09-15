@@ -26,9 +26,9 @@ The relevant blog post for this assessment is in [https://etc5523-2021.github.io
 
 This assessment is due Fri Sep 17 2021 11.55PM AEST.
 
-My selected country is [FILL].
+My selected country is [Peru].
 
-The relevant blog post for this assessment is in [FILL].html
+The relevant blog post for this assessment is in [https://etc5523-2021.github.io/blog-Ori-Wang/posts/2021-09-14-peru-covid-19/].
 
 - [ ] Selected a new country
 - [ ] Data Story 1
